@@ -1,9 +1,12 @@
 package com.genesis.automata;
 
+import com.genesis.automata.registry.ContentRegistry;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.fabricmc.api.ModInitializer;
+import software.bernie.geckolib3.GeckoLib;
 
 public class GenesisAutomata implements ModInitializer {
 
@@ -17,6 +20,16 @@ public class GenesisAutomata implements ModInitializer {
         // Proceed with mild caution.
 
         LOGGER.info("Genesis starts now!. Hello World!");
+
+        // Initialize Required Dependencies
+        GeckoLib.initialize();
+
+        // Start Registries
+        try {
+            ContentRegistry.initialize();
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
 
 }

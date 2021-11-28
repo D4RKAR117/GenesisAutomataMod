@@ -1,12 +1,12 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.genesis.automata.mixin",
+  "package": "com.genesis.automata.mixins",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
   ],
   "client": [
-    "ClientMixin"
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
