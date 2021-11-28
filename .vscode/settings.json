@@ -1,4 +1,4 @@
 {
-  "java.configuration.updateBuildConfiguration": "interactive",
-  "cSpell.words": ["entrypoints"]
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "cSpell.words": ["entrypoints", "fabricloader", "Minecraft"]
 }
