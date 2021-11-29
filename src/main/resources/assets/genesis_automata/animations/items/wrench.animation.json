@@ -1,0 +1,45 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.wrench.expand": {
+			"animation_length": 3.5,
+			"bones": {
+				"top": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.5": {
+							"vector": [0, 0.725, 0],
+							"easing": "easeOutCirc"
+						},
+						"3.5": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutCirc"
+						}
+					}
+				}
+			}
+		},
+		"animation.wrench.adjust": {
+			"animation_length": 3.5,
+			"bones": {
+				"top": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.75": {
+							"vector": [0, -0.775, 0],
+							"easing": "easeInExpo"
+						},
+						"2.5": {
+							"vector": [0, 0, 0],
+							"easing": "easeInExpo"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -12,6 +12,7 @@ import com.genesis.automata.classes.utils.GenesisUtils;
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
 
 public class ContentRegistry {
 
@@ -37,6 +38,8 @@ public class ContentRegistry {
         MOD_ITEMS.forEach((identifier, item) -> {
             GenesisAutomata.LOGGER.info("Registering Item {}", identifier);
             Registry.register(Registry.ITEM, new Identifier(GenesisAutomata.MOD_ID, identifier), item);
+            GenesisAutomata.LOGGER.info("Registering Item {} Renderer", identifier);
+            GeoItemRenderer.registerItemRenderer(item, item.renderer);
         });
     }
 

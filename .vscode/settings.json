@@ -1,4 +1,10 @@
 {
   "java.configuration.updateBuildConfiguration": "automatic",
-  "cSpell.words": ["entrypoints", "fabricloader", "Minecraft"]
+  "cSpell.words": [
+    "animatable",
+    "entrypoints",
+    "fabricloader",
+    "Minecraft",
+    "Syncable"
+  ]
 }
