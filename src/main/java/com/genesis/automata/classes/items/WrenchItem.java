@@ -1,5 +1,8 @@
 package com.genesis.automata.classes.items;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.genesis.automata.classes.GenesisItem;
 import com.genesis.automata.classes.models.renderers.WrenchItemRenderer;
 
@@ -8,7 +11,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -26,7 +28,19 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 public class WrenchItem extends GenesisItem {
 
     public AnimationFactory factory = new AnimationFactory(this);
-    public static final int ANIM_OPEN = 0;
+    public static final Map<String, Integer> ANIM_STATES = new HashMap<>() {
+        {
+            put("extend", 0);
+            put("adjust", 1);
+        }
+    };
+    public static final String ANIM_CONTROLLER = "interaction_controller";
+    public static final Map<String, String> ANIM_LIST = new HashMap<>() {
+        {
+            put("extend", "animation.wrench.expand");
+            put("adjust", "animation.wrench.adjust");
+        }
+    };
 
     private static Settings buildItemSettings(ItemGroup group) {
         Settings itemSettings = new Settings();
@@ -43,30 +57,40 @@ public class WrenchItem extends GenesisItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (hand == Hand.MAIN_HAND)
-            user.sendMessage(new LiteralText("Used wrench"), true);
         if (!world.isClient) {
-            ItemStack stack = user.getStackInHand(hand);
             // Gets the item that the player is holding, should be this item.
+            ItemStack stack = user.getStackInHand(hand);
             final int id = GeckoLibUtil.guaranteeIDForStack(stack, (ServerWorld) world);
-            GeckoLibNetwork.syncAnimation(user, this, id, ANIM_OPEN);
-            // Tell all nearby clients to trigger this item to animate
-            for (PlayerEntity otherPlayer : PlayerLookup.tracking(user)) {
-                GeckoLibNetwork.syncAnimation(otherPlayer, this, id, ANIM_OPEN);
+            if (hand == Hand.MAIN_HAND) {
+
+                if (!user.isSneaking()) {
+                    GeckoLibNetwork.syncAnimation(user, this, id, ANIM_STATES.get("extend"));
+                    // Tell all nearby clients to trigger this item to animate
+                    for (PlayerEntity otherPlayer : PlayerLookup.tracking(user)) {
+                        GeckoLibNetwork.syncAnimation(otherPlayer, this, id, ANIM_STATES.get("extend"));
+                    }
+                } else if (user.isSneaking()) {
+                    GeckoLibNetwork.syncAnimation(user, this, id, ANIM_STATES.get("adjust"));
+                    // Tell all nearby clients to trigger this item to animate
+                    for (PlayerEntity otherPlayer : PlayerLookup.tracking(user)) {
+                        GeckoLibNetwork.syncAnimation(otherPlayer, this, id, ANIM_STATES.get("adjust"));
+                    }
+                }
             }
+
         }
         return super.use(world, user, hand);
     }
 
     private <P extends GenesisItem & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.wrench.expand", false));
         return PlayState.CONTINUE;
     }
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(
-                new AnimationController<WrenchItem>(this, "interaction_controller", 20, this::predicate));
+        AnimationController<WrenchItem> mainController = new AnimationController<WrenchItem>(this, ANIM_CONTROLLER, 20,
+                this::predicate);
+        data.addAnimationController(mainController);
 
     }
 
@@ -77,14 +101,24 @@ public class WrenchItem extends GenesisItem {
 
     @Override
     public void onAnimationSync(int id, int state) {
-        if (state == ANIM_OPEN) {
+        if (state == ANIM_STATES.get("extend")) {
             final AnimationController<?> controller = GeckoLibUtil.getControllerForID(this.factory, id,
-                    "interaction_controller");
+                    ANIM_CONTROLLER);
             if (controller.getAnimationState() == AnimationState.Stopped) {
                 controller.markNeedsReload();
-                controller.setAnimation(new AnimationBuilder().addAnimation("animation.wrench.expand", false));
+                controller.setAnimation(new AnimationBuilder().addAnimation(ANIM_LIST.get("extend"), false));
             }
         }
+
+        if (state == ANIM_STATES.get("adjust")) {
+            final AnimationController<?> controller = GeckoLibUtil.getControllerForID(this.factory, id,
+                    ANIM_CONTROLLER);
+            if (controller.getAnimationState() == AnimationState.Stopped) {
+                controller.markNeedsReload();
+                controller.setAnimation(new AnimationBuilder().addAnimation(ANIM_LIST.get("adjust"), false));
+            }
+        }
+
     }
 
 }
