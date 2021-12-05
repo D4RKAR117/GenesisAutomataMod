@@ -1,17 +1,22 @@
 package com.genesis.automata.classes.items;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.genesis.automata.classes.GenesisItem;
 import com.genesis.automata.classes.models.renderers.WrenchItemRenderer;
 
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.AnimationState;
@@ -47,6 +52,7 @@ public class WrenchItem extends GenesisItem {
         itemSettings.group(group);
         itemSettings.maxCount(1);
         itemSettings.fireproof();
+        itemSettings.rarity(Rarity.UNCOMMON);
         return itemSettings;
     }
 
@@ -80,6 +86,12 @@ public class WrenchItem extends GenesisItem {
 
         }
         return super.use(world, user, hand);
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        tooltip.add(new TranslatableText("item.genesis_automata.wrench.tooltip"));
+        super.appendTooltip(stack, world, tooltip, context);
     }
 
     private <P extends GenesisItem & IAnimatable> PlayState predicate(AnimationEvent<P> event) {

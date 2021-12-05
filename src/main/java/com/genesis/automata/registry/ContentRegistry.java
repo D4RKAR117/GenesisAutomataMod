@@ -37,7 +37,8 @@ public class ContentRegistry {
         GenesisAutomata.LOGGER.info("Located {} Items to register", MOD_ITEMS.size());
         MOD_ITEMS.forEach((identifier, item) -> {
             GenesisAutomata.LOGGER.info("Registering Item {}", identifier);
-            Registry.register(Registry.ITEM, new Identifier(GenesisAutomata.MOD_ID, identifier), item);
+            MOD_ITEMS.put(identifier,
+                    Registry.register(Registry.ITEM, new Identifier(GenesisAutomata.MOD_ID, identifier), item));
             GenesisAutomata.LOGGER.info("Registering Item {} Renderer", identifier);
             GeoItemRenderer.registerItemRenderer(item, item.renderer);
         });
