@@ -7,7 +7,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
-public class RepoGroups {
+public abstract class RepoGroups {
 
     public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(
             new Identifier(GenesisAutomata.MOD_ID, "items_group"),
