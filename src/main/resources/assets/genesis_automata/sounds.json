@@ -1,12 +1,10 @@
 {
-  "item.wrench.wrench_interaction": {
-    "category": "item",
-    "subtitle": "subtitles.genesis_automata.wrench_interaction",
+  "sounds.item.wrench.wrench_interaction": {
+    "subtitle": "subtitles.genesis_automata.sounds.wrench_interaction",
     "sounds": [
-        {
-            "type": "sound",
-            "name": "genesis_automata:wrench_interaction"
-        }
+      {
+        "name": "genesis_automata:wrench_interaction"
+      }
     ]
   }
 }

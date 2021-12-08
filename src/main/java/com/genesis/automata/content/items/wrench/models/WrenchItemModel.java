@@ -1,7 +1,7 @@
-package com.genesis.automata.classes.models;
+package com.genesis.automata.content.items.wrench.models;
 
 import com.genesis.automata.GenesisAutomata;
-import com.genesis.automata.classes.items.WrenchItem;
+import com.genesis.automata.content.items.wrench.WrenchItem;
 
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.model.AnimatedGeoModel;

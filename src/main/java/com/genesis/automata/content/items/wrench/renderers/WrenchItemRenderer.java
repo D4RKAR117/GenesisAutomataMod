@@ -1,7 +1,7 @@
-package com.genesis.automata.classes.models.renderers;
+package com.genesis.automata.content.items.wrench.renderers;
 
-import com.genesis.automata.classes.items.WrenchItem;
-import com.genesis.automata.classes.models.WrenchItemModel;
+import com.genesis.automata.content.items.wrench.WrenchItem;
+import com.genesis.automata.content.items.wrench.models.WrenchItemModel;
 
 import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
 

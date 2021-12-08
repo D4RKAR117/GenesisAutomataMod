@@ -1,12 +1,12 @@
-package com.genesis.automata.classes.items;
+package com.genesis.automata.content.items.wrench;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.genesis.automata.classes.GenesisItem;
-import com.genesis.automata.classes.models.renderers.WrenchItemRenderer;
-import com.genesis.automata.registry.repositories.RepoSounds;
+import com.genesis.automata.content.items.BaseItem;
+import com.genesis.automata.content.items.wrench.renderers.WrenchItemRenderer;
+import com.genesis.automata.registry.ModSounds;
 
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.client.item.TooltipContext;
@@ -31,7 +31,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.network.GeckoLibNetwork;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class WrenchItem extends GenesisItem {
+public class WrenchItem extends BaseItem {
 
     public AnimationFactory factory = new AnimationFactory(this);
     public static final Map<String, Integer> ANIM_STATES = new HashMap<>() {
@@ -40,7 +40,7 @@ public class WrenchItem extends GenesisItem {
             put("adjust", 1);
         }
     };
-    public static final String ANIM_CONTROLLER = "interaction_controller";
+    public static final String ANIM_CONTROLLER = "controller";
     public static final Map<String, String> ANIM_LIST = new HashMap<>() {
         {
             put("expand", "animation.wrench.expand");
@@ -58,13 +58,13 @@ public class WrenchItem extends GenesisItem {
     }
 
     public WrenchItem(String identifier, ItemGroup group) {
-        super(buildItemSettings(group), identifier, new WrenchItemRenderer());
+        super(identifier, new WrenchItemRenderer(), buildItemSettings(group));
         GeckoLibNetwork.registerSyncable(this);
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        user.playSound(RepoSounds.WRENCH_INTERACTION_SOUND, 1.0F, 1.0F);
+        user.playSound(ModSounds.WRENCH_INTERACTION_SOUND, 1.0F, 1.0F);
         if (!world.isClient) {
             // Gets the item that the player is holding, should be this item.
             ItemStack stack = user.getStackInHand(hand);
@@ -96,7 +96,7 @@ public class WrenchItem extends GenesisItem {
         super.appendTooltip(stack, world, tooltip, context);
     }
 
-    private <P extends GenesisItem & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
+    private <P extends BaseItem & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
         return PlayState.CONTINUE;
     }
 

@@ -1,6 +1,8 @@
 package com.genesis.automata;
 
-import com.genesis.automata.registry.ContentRegistry;
+import com.genesis.automata.registry.ModGroups;
+import com.genesis.automata.registry.ModItems;
+import com.genesis.automata.registry.ModSounds;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +14,10 @@ public class GenesisAutomata implements ModInitializer {
 
     public static final String MOD_ID = "genesis_automata";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
+
+    public static ModGroups GROUPS;
+    public static ModItems ITEMS;
+    public static ModSounds SOUNDS;
 
     @Override
     public void onInitialize() {
@@ -25,11 +31,9 @@ public class GenesisAutomata implements ModInitializer {
         GeckoLib.initialize();
 
         // Start Registries
-        try {
-            ContentRegistry.initialize();
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
+        ITEMS = new ModItems();
+        SOUNDS = new ModSounds();
+
     }
 
 }
