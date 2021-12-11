@@ -9,7 +9,9 @@ import com.genesis.automata.content.items.wrench.renderers.WrenchItemRenderer;
 import com.genesis.automata.registry.ModSounds;
 
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -25,6 +27,7 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -64,7 +67,6 @@ public class WrenchItem extends BaseItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        user.playSound(ModSounds.WRENCH_INTERACTION_SOUND, 1.0F, 1.0F);
         if (!world.isClient) {
             // Gets the item that the player is holding, should be this item.
             ItemStack stack = user.getStackInHand(hand);
@@ -100,12 +102,18 @@ public class WrenchItem extends BaseItem {
         return PlayState.CONTINUE;
     }
 
+    @SuppressWarnings("resource")
+    private void soundListener(SoundKeyframeEvent<WrenchItem> event) {
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        player.playSound(ModSounds.LIST.get(event.sound), 1, 1);
+    }
+
     @Override
     public void registerControllers(AnimationData data) {
         AnimationController<WrenchItem> mainController = new AnimationController<WrenchItem>(this, ANIM_CONTROLLER, 20,
                 this::predicate);
+        mainController.registerSoundListener(this::soundListener);
         data.addAnimationController(mainController);
-
     }
 
     @Override

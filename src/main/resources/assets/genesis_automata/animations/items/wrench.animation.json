@@ -34,6 +34,11 @@
 						}
 					}
 				}
+			},
+			"sound_effects": {
+				"1.0": {
+					"effect": "sounds.item.wrench.wrench_interaction"
+				}
 			}
 		},
 		"animation.wrench.adjust": {
@@ -68,6 +73,11 @@
 							"easing": "easeOutExpo"
 						}
 					}
+				}
+			},
+			"sound_effects": {
+				"1.0": {
+					"effect": "sounds.item.wrench.wrench_interaction"
 				}
 			}
 		}

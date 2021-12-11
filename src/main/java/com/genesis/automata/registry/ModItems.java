@@ -1,5 +1,8 @@
 package com.genesis.automata.registry;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.genesis.automata.GenesisAutomata;
 import com.genesis.automata.content.items.BaseItem;
 import com.genesis.automata.content.items.wrench.WrenchItem;
@@ -10,6 +13,8 @@ import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
 
 public class ModItems {
 
+    public static Map<String, BaseItem> LIST = new HashMap<>();
+
     public final static BaseItem WRENCH = newItem(new WrenchItem("wrench", ModGroups.ITEM_GROUP));
 
     public static BaseItem newItem(BaseItem item) {
@@ -18,6 +23,7 @@ public class ModItems {
                 item);
         GenesisAutomata.LOGGER.info("Registering new Item Renderer, identifier: {}_renderer", item.identifier);
         GeoItemRenderer.registerItemRenderer(registry, registry.renderer);
+        LIST.put(registry.identifier, registry);
         return registry;
     }
 }
